@@ -1,0 +1,7 @@
+{
+  "name": "sistema-peluqueria",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
