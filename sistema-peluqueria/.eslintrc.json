@@ -5,7 +5,7 @@
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["tsconfig.json"],
+        "project": ["Proyecto-Final-Peluqueria/System-Hairdresser-Admin-Ionic/sistema-peluqueria/tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [
