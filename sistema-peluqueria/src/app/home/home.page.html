@@ -78,6 +78,123 @@
           </ion-chip>  </h6>
   
       </div>
-       <ion-button expand="full" color="primary">Editar Datos</ion-button> 
+       <ion-button (click)="getUserProfileImageonUpdate()" id="open-modal"  expand="full" color="primary">Editar Datos</ion-button> 
+       <ion-button expand="full" color="primary">Agregar Servicio</ion-button> 
     </div>
+
   </ion-content>
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button
+              style="font-size: 15px"
+              color="primary"
+              (click)="cancel()"
+              >Cancelar</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content style="--background: none;" id="modalUpdateUser" class="bg-color">
+        <ion-card-content class="ion-no-margin">
+          <ion-card-title
+            style="
+              text-align: center;
+              margin-bottom: 8px;
+              font-weight: bold;
+              font-size: 25px;
+              color: #53565a;
+            "
+          >
+            Actualizar
+          </ion-card-title>
+          <form [formGroup]="updateUsuarioForm" (ngSubmit)="updateUser()">
+            <div class="wrapform">
+              <ion-item disabled="true">
+                <ion-input
+                  name="id"
+                  id="id"
+                  required
+                  placeholder="ID"
+                  formControlName="id"
+                  [(ngModel)]="usuarioAuxiliar.id" 
+                
+                >
+               
+                  <ion-icon
+                    color="primary"
+                    name="bookmark-outline"
+                  ></ion-icon>
+                  &nbsp; &nbsp;
+                </ion-input>
+              </ion-item>
+
+
+
+              <ion-item>
+                <ion-input
+                  name="username"
+                  id="username"
+                  type="email"
+                  required
+                  placeholder=" Email"
+                  formControlName="username"
+                  [(ngModel)]="usuarioAuxiliar.username"
+                >
+                  <ion-icon color="primary" name="text-outline"></ion-icon>
+                  &nbsp; &nbsp;
+                </ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input
+                  name="password"
+                  type="password"
+                  id="password"
+                  required
+                  placeholder=" Contraseña"
+                  formControlName="password"
+                  minlength="6" 
+                >
+                  <ion-icon name="lock-closed"></ion-icon>
+                  &nbsp; &nbsp;
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label class="normal">
+                  Foto:
+                </ion-label>
+                <ion-buttons>
+                  <ion-button >
+                    <label for="file-upload">
+                    <ion-icon slot="icon-only" name="images"> </ion-icon>
+                  </label> 
+                    <input (change)="mostrarImagen($event)" id="file-upload" style="display: none;" type="file" accept="image/*">
+                  </ion-button>
+                </ion-buttons>
+              </ion-item>
+              <ion-item>
+                <img id="imagenonUpdate" style="max-width:80%; max-height:80%; margin-left: auto; margin-right: auto;" class="image"  [src]="userActualizado.foto ">
+              </ion-item>
+               
+              
+            </div>
+            <div class="sign-btn-wrap">
+              <ion-button
+                color="success"
+                shape="round"
+                type="submit"
+                fill="solid"
+                class="sign-btn"
+                [disabled]="!updateUsuarioForm.valid"
+                >Actualizar</ion-button
+              >
+            </div>
+          </form>
+        </ion-card-content>
+      </ion-content>
+    </ng-template>
+  </ion-modal>

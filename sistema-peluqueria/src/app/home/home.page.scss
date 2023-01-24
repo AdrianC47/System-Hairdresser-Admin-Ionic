@@ -6,6 +6,21 @@ ion-content {
   height: 100%;
   width: 100%;
 }
+.sign-btn-wrap{
+  text-align: center;
+  padding-top: 45px;
+ .sign-btn{
+   --ion-primary-color:#215AB7;
+   --background:#215AB7;
+   --background-activated:#E1EAF9;
+   --background-focused:#E1EAF9;
+   --background-hover:#647B9D;
+   color:#F4F6FA;
+   background-color: #215AB7;
+   border-radius: 25px;
+
+ }
+}
 
 ion-toolbar {
   background: transparent;
