@@ -1,9 +1,91 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>registro</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="Volver"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+ <ion-content class="bg-color">
+  <ion-card class="ion-no-margin">
+    <ion-card-header>
+      <ion-card-title> Registro </ion-card-title>
+      <ion-card-subtitle>
+        Crea tu cuenta llenando el formulario
+      </ion-card-subtitle>
+    </ion-card-header>
+  
+    <form [formGroup]="userRegisterForm" (ngSubmit)="registrarse()">
+      <ion-card-content>
+        <ion-item>
+          <ion-input
+            name="username"
+            type="email"
+            id="username"
+            required
+            placeholder="Email"
+            formControlName="username"
+          >
+            <ion-icon name="person-outline"></ion-icon>
+          </ion-input>
+        </ion-item>
 
+        <ion-item>
+          <ion-input
+            name="password"
+            type="password"
+            id="password"
+            required
+            placeholder="Contraseña"
+            formControlName="password"
+            minlength="6" 
+          >
+            <ion-icon name="lock-closed"></ion-icon>
+          </ion-input>
+        </ion-item>
+
+ 
+
+        <ion-item>
+          <ion-label class="normal">
+            Foto:
+          </ion-label>
+          <ion-buttons>
+            <ion-button >
+              <label for="file-upload">
+              <ion-icon slot="icon-only" name="images"> </ion-icon>
+            </label> 
+              <input (change)="mostrarImagen($event)" id="file-upload" style="display: none;" type="file" accept="image/*">
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+        <ion-item>
+          <img style="max-width:80%; max-height:80%; margin-left: auto; margin-right: auto;" class="image"  [src]="newUser.foto ">
+        </ion-item>
+       
+
+        <div class="sign-btn-wrap">
+          <ion-button
+            shape="round"
+            type="submit"
+            fill="solid"
+            class="sign-btn"
+            [disabled]="!userRegisterForm.valid"
+            >Registarse</ion-button
+          >
+        </div>
+
+
+        <div class="social-btns" style="margin-bottom: 30px;">
+          <ion-button  href="https://sites.google.com/view/ciclonmasuno/p%C3%A1gina-principal"  fill="clear" class="applebtn ion-no-padding">
+            <ion-img src="../../assets/Logo.png"></ion-img>
+          </ion-button>
+          <div style="margin-left: auto; margin-right: auto;">
+            <span style="color: black;" >Copyright &copy; @AdrianC47</span>
+          </div>
+        </div>
+
+      </ion-card-content>
+    </form>
+  </ion-card>
 </ion-content>
