@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { UserService } from '../api/user.service';
-
+import { FlashMessagesService } from 'flash-messages-angular'; 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -12,13 +12,14 @@ import { UserService } from '../api/user.service';
 export class LoginPage implements OnInit {
 
   userLoginForm: FormGroup = this.fb.group({
-    'username': ['', [Validators.required]],
+    'email': ['', [Validators.required]],
     'password': ['', [Validators.required]],
   })
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private flashMessages: FlashMessagesService,
     private toastController: ToastController,
     private router: Router
   ) { }
@@ -34,8 +35,22 @@ export class LoginPage implements OnInit {
     console.log('registro');
   }
   async login() {
-
  
+    if(!this.userLoginForm.valid){
+      return false;
+    }else{
+    this.userService.login(this.userLoginForm.get("email").value, this.userLoginForm.get("password").value)
+      .then( res => {
+        this.router.navigate(['/home']);
+        this.mostrarMensaje('Ha iniciado sesion correctamente');
+      })
+      .catch(error =>{
+        this.flashMessages.show(error.message, {
+          cssClass: 'alert-danger', timeout: 4000
+        });
+      });
+      return true;
+    }    
   }
   async mostrarMensaje(mensaje: any) {
     const toast = await this.toastController.create({

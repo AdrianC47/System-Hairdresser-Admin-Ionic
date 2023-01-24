@@ -8,17 +8,19 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
-import { AngularFireModule } from '@angular/fire/compat'
+import { AngularFireModule } from '@angular/fire/compat' 
+import {FlashMessagesModule} from 'flash-messages-angular';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore/';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
+  imports: [BrowserModule, FlashMessagesModule.forRoot(),
+    IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule, AngularFirestoreModule
+    AngularFirestoreModule, AngularFirestoreModule,
   ],
 
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, ],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { Observable } from 'rxjs';
 import { ToastController } from '@ionic/angular';
 import { AngularFireAuth } from "@angular/fire/compat/auth";
@@ -13,30 +15,38 @@ import { User } from '../entidades/User';
 export class UserService {
   private dbPath = '/users';
   usersRef: AngularFirestoreCollection<User>;
-
-  constructor(private db: AngularFirestore, private authService: AngularFireAuth, private toastController: ToastController,) {
+  constructor(private db: AngularFirestore, private authService: AngularFireAuth, private toastController: ToastController,
+    public storage: AngularFireStorage) {
     this.usersRef = db.collection(this.dbPath);
   }
 
   registrarse(user: User): any {
     return new Promise((resolve, reject) => {
       this.authService.createUserWithEmailAndPassword(user.username, user.password).then(datos => {
-        resolve(datos) 
+        resolve(datos)
         localStorage.setItem('UID', datos.user.uid);
-        user.id=datos.user.uid
+        user.id = datos.user.uid
         this.usersRef.add(user);
       },
         error => {
           reject(error)
-          this.mostrarMensaje(error)})
-      
+          this.mostrarMensaje(error)
+        })
+
+    })
+  }
+  login(email: string, password: string) {
+    return new Promise((resolve, reject) => {
+      this.authService.signInWithEmailAndPassword(email, password)
+        .then(datos => {
+          resolve(datos),
+            localStorage.setItem('UID', datos.user.uid)
+        },
+          error => reject(error)
+        )
     })
   }
 
-
-  metodo() {
-
-  }
   guardarUsuario() {
     this.authService.onAuthStateChanged(user => {
       if (user) {
@@ -54,6 +64,14 @@ export class UserService {
     return this.usersRef.doc(id).valueChanges();
   }
 
+  getByUID(uid: string): Observable<any> {
+    return this.usersRef.doc(uid).valueChanges();
+  }
+
+
+
+ 
+
   create(user: User): any {
     return this.usersRef.add(user);
   }
@@ -65,7 +83,11 @@ export class UserService {
   delete(id: string): Promise<void> {
     return this.usersRef.doc(id).delete();
   }
-
+  getAuth() {
+    return this.authService.authState.pipe( //esto regresaria el usuario autenticado en caso de haberlo
+      map(auth => auth)
+    );
+  }
   async mostrarMensaje(mensaje: any) {
     const toast = await this.toastController.create({
       position: 'top',

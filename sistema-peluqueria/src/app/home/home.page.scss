@@ -1,27 +1,136 @@
-#container {
-  text-align: center;
+// ion-menu::part(backdrop) {
+//   background-color: rgba(36, 85, 233, 0.5);
+// }
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+// ion-menu::part(container) {
+//   border-radius: 0 20px 20px 0;
+
+//   box-shadow: 4px 0px 16px rgba(6, 168, 213, 0.18);
+// }
+
+// /* iOS places the subtitle above the title */
+// ion-card-header.ios {
+//   display: flex;
+//   flex-flow: column-reverse;
+// }
+
+
+
+// ion-card img {
+//   border-radius: 10px;
+//   display: block;
+//   width: 100%;
+//   height: 100% !important;
+// }
+// .delete{
+//   margin-left: 45px;
+//   margin-top: 10px; 
+// }
+// .favCard{
+ 
+//   border-radius: 10px;
+//   box-shadow: -1px 3px 5px 0px rgba(0,0,0,0.75);
+//   // margin: auto;
+//   margin-top: 30px;
+ 
+//   overflow: visible;
+// }
+// .info{
+//   z-index: 9;
+//   border-radius: 50px;
+//   -webkit-box-shadow: -1px 10px 5px 0px rgba(0,0,0,0.75);
+//   box-shadow: -1px 10px 5px 0px rgba(0,0,0,0.75);
+//   margin-top: -12%;
+//   z-index: 3;
+//   position: absolute;
+//   margin-left: 50px;
+//   width: 220px;
+//   background-color: white;
+// }
+
+
+// ion-card-title{
+ 
+//   font-size: 25px;
+//   color: black;
+//   font-weight: 600;
+ 
+
+// }
+
+// .sign-btn-wrap{
+//   text-align: center;
+//   padding-top: 45px;
+//  .sign-btn{
+//    --ion-primary-color:#215AB7;
+//    --background:#215AB7;
+//    --background-activated:#E1EAF9;
+//    --background-focused:#E1EAF9;
+//    --background-hover:#647B9D;
+//    color:#F4F6FA;
+//    background-color: #215AB7;
+//    border-radius: 25px;
+
+//  }
+// }
+
+ion-content {
+  --background: url(../../assets/background_full.jpg) no-repeat top center/cover fixed, #fff;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+ion-toolbar {
+  background: transparent;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+.card {
+  margin: 0 auto;
 
-  color: #8c8c8c;
+  .header {
+      height: 200px;
 
-  margin: 0;
+      .avatar {
+          width: 160px;
+          height: 160px;
+          position: relative;
+          margin: 0 auto;
+
+          img {
+              display: block;
+              border-radius: 50%;
+              position: absolute;
+              bottom: calc(-1*(80px + 4px));
+              border: 8px solid #9Dc912;
+              background-color: #fff;
+          }
+      }
+  }
 }
 
-#container a {
-  text-decoration: none;
+.card-body {
+  background-color: #ffffff;
+  // padding: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  height: calc(100vh - 256px);
+  overflow: hidden;
+
+  .user-meta {
+      padding-top: 40px;
+
+      .playername {
+          font-size: 24px;
+          font-weight: 600;
+          color: #303940;
+      }
+
+      .country {
+          font-size: 90%;
+          color: #949ea6;
+          text-transform: uppercase;
+          margin: 0 auto;
+      }
+  }
 }
