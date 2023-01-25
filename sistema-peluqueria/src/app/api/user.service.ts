@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { AngularFireStorage, } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { ToastController } from '@ionic/angular';
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { map } from 'rxjs/operators';
-
+import { getAuth, updateEmail, updatePassword } from "firebase/auth";
 import { User } from '../entidades/User';
-
+import { finalize } from 'rxjs/operators';  
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private dbPath = '/users';
+  private dbPath = '/Estilistas';
   usersRef: AngularFirestoreCollection<User>;
-  constructor(private db: AngularFirestore, private authService: AngularFireAuth, private toastController: ToastController,
+  documento: AngularFirestoreDocument<User>;
+  constructor(
+    private db: AngularFirestore,
+    private authService: AngularFireAuth,
+    private toastController: ToastController,
     public storage: AngularFireStorage) {
     this.usersRef = db.collection(this.dbPath);
   }
@@ -25,8 +28,9 @@ export class UserService {
       this.authService.createUserWithEmailAndPassword(user.username, user.password).then(datos => {
         resolve(datos)
         localStorage.setItem('UID', datos.user.uid);
-        user.id = datos.user.uid
-        this.usersRef.add(user);
+        user.id = datos.user.uid 
+        // this.create(datos,this.dbPath,user.id)
+        this.create(user,user.id)
       },
         error => {
           reject(error)
@@ -35,6 +39,7 @@ export class UserService {
 
     })
   }
+ 
   login(email: string, password: string) {
     return new Promise((resolve, reject) => {
       this.authService.signInWithEmailAndPassword(email, password)
@@ -46,6 +51,24 @@ export class UserService {
         )
     })
   }
+
+  uploadImage(file: any, path: string, nombre: string): Promise<string> {
+    return new Promise(  resolve => {
+        const filePath = path + '/' + nombre;
+        const ref = this.storage.ref(filePath);
+        const task = ref.put(file);
+        task.snapshotChanges().pipe(
+          finalize(  () => {
+                ref.getDownloadURL().subscribe( res => {
+                  const downloadURL = res;
+                  resolve(downloadURL);
+                  return;
+                });
+          })
+       )
+      .subscribe();
+    });
+}
 
   guardarUsuario() {
     this.authService.onAuthStateChanged(user => {
@@ -65,20 +88,46 @@ export class UserService {
   }
 
   getByUID(uid: string): Observable<any> {
+    //se recupera el documento por el ID del documento del firestore
     return this.usersRef.doc(uid).valueChanges();
   }
 
-
-
  
 
-  create(user: User): any {
-    return this.usersRef.add(user);
+  create(user: User,id:string): any {
+    this.usersRef.doc(id).set(user)
+    console.log("hola")
+    return true;
   }
 
-  update(id: string, user: User): Promise<void> {
+  updateinDB(user: User, id: string ): any {
+
+    this.usersRef.doc(id).update(user)
+    console.log("update")
+
+    return true;
+  }
+
+  update(id: string, user: User){
     return this.usersRef.doc(id).update(user);
   }
+  async updateinAuth(user: User, id: string )  {
+ 
+
+    const auth = getAuth();
+    await updateEmail(auth.currentUser,user.username).then(() =>{
+      console.log("Email actualizado")
+    }).catch((error) => {
+      console.log("Email NO actualizado" + error)
+    });
+    // updatePassword(auth.currentUser,user.password).then(() =>{
+    //   console.log("Password actualizado")
+    // }).catch((error) => {
+    //   console.log("Password NO actualizado" + error)
+    // });
+ 
+  }
+
 
   delete(id: string): Promise<void> {
     return this.usersRef.doc(id).delete();
@@ -88,6 +137,8 @@ export class UserService {
       map(auth => auth)
     );
   }
+
+
   async mostrarMensaje(mensaje: any) {
     const toast = await this.toastController.create({
       position: 'top',

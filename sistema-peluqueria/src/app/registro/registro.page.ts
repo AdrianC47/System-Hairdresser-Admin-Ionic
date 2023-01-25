@@ -6,6 +6,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { UserService } from '../api/user.service';
 import { finalize } from 'rxjs/operators';
 import { User } from '../entidades/User';
+import { Perfil } from '../Perfil.enum';
 
 @Component({
   selector: 'app-registro',
@@ -17,6 +18,11 @@ export class RegistroPage implements OnInit {
   userRegisterForm: FormGroup = this.fb.group({
     'username': ['', [Validators.required]],
     'password': ['', [Validators.required]],
+    // 'foto': ['', [Validators.required]],
+    'nombre': ['', [Validators.required]],
+    'cedula': ['', [Validators.required]],
+    'telefono': ['', [Validators.required]],
+    'perfil': ['', [Validators.required]],
   });
 
   constructor(
@@ -64,9 +70,12 @@ export class RegistroPage implements OnInit {
     if (!this.userRegisterForm.valid) {
       return false;
     } else {
+      
+      // this.userRegisterForm.controls['foto'].setValue("Estilistas/"+this.uid); 
       this.userService.registrarse(this.userRegisterForm.value).then(async() => {
-        this.mostrarMensaje('Usuario creado exitosamente!')
         this.uid = localStorage.getItem('UID')
+        this.mostrarMensaje('Usuario creado exitosamente!')
+        
         console.log(this.uid)
         const path = "Estilistas";
         const name = this.uid; 
@@ -74,9 +83,7 @@ export class RegistroPage implements OnInit {
 
         console.log("file es "+file)
         const res = await this.subirImagen(file, path, name)
-        this.newUser.foto = res;
-        // console.log("recibi res de la promesa", res);
-        // console.log("Fin de la funcion => nuevaImagen")
+        this.newUser.foto = res; 
         this.userRegisterForm.reset();
         this.router.navigate(['/home']);
       });
@@ -114,6 +121,10 @@ export class RegistroPage implements OnInit {
       username: '',
       password: '',
       foto: '',
+      nombre  : '',
+      cedula  : '',
+      telefono: '',
+      perfil:Perfil.Estilista,
     };
   }
 

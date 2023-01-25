@@ -47,6 +47,62 @@
  
 
         <ion-item>
+          <ion-input
+            name="nombre"
+            id="nombre"
+            type="text"
+            required
+            placeholder="Nombre"
+            formControlName="nombre"
+          >
+          <ion-icon color="primary" name="text-outline"></ion-icon>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+             
+            name="cedula"
+            id="cedula"
+            required
+            placeholder="Numero de Cedula"
+            formControlName="cedula"
+          >
+          <ion-icon color="primary" name="finger-print-outline"></ion-icon>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            name="telefono"
+            id="telefono"
+            type="text"
+            required
+            placeholder="Telefono"
+            formControlName="telefono"
+          >
+          <ion-icon  color="primary" name="call-outline"></ion-icon>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon color="primary" name="ellipsis-vertical-outline"></ion-icon>
+          <ion-select
+           name="perfil"
+           id="perfil"
+           required
+           formControlName="perfil"
+            interface="action-sheet"
+            placeholder="Seleccione su Perfil"
+          >
+       
+            <ion-select-option value="Estilista">Estilista</ion-select-option>
+            <!-- <ion-select-option value="RUC">RUC</ion-select-option> -->
+        
+          </ion-select>
+        
+        </ion-item>
+        <ion-item>
           <ion-label class="normal">
             Foto:
           </ion-label>
@@ -55,14 +111,19 @@
               <label for="file-upload">
               <ion-icon slot="icon-only" name="images"> </ion-icon>
             </label> 
-              <input (change)="mostrarImagen($event)" id="file-upload" style="display: none;" type="file" accept="image/*">
+            <!-- formControlName="foto" -->
+              <input 
+              name="foto"
+              id="foto"
+
+               required (change)="mostrarImagen($event)" id="file-upload" style="display: none;" type="file" accept="image/*"
+               >
             </ion-button>
           </ion-buttons>
         </ion-item>
         <ion-item>
           <img style="max-width:80%; max-height:80%; margin-left: auto; margin-right: auto;" class="image"  [src]="newUser.foto ">
         </ion-item>
-       
 
         <div class="sign-btn-wrap">
           <ion-button
